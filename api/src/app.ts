@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
-import containerRoutes from './routes/container.routes';
+import { RegisterRoutes } from './routes/routes'; // Archivo generado por tsoa
 import { errorHandler } from './middlewares/error.middleware';
+import swaggerUi from 'swagger-ui-express';
+import * as swaggerDocument from '../dist/swagger.json';
 
 const app = express();
 
@@ -10,7 +12,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/containers', containerRoutes);
+RegisterRoutes(app);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 // Health check endpoint
 app.get('/health', (req, res) => {

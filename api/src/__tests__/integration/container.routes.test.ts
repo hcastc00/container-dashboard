@@ -28,7 +28,7 @@ describe('Container Routes Integration Tests', () => {
       const response = await request(app).get('/containers');
 
       expect(response.status).toBe(500);
-      expect(response.body).toEqual({ error: 'Internal Server Error' });
+      expect(response.body).toEqual({ error: 'Docker error' });
     });
   });
 
