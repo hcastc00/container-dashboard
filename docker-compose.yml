@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  api:
+    build: ./api
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - dappnet
+    healthcheck:
+      test: curl -f http://localhost:3000/health || exit 1
+      interval: 10s
+      retries: 3
+      start_period: 5s
+    environment:
+      - PORT=3000
+
+  ui:
+    build: ./ui
+    ports:
+      - "8080:80"
+    networks:
+      - dappnet
+    environment:
+      - VITE_API_URL=http://api:3000
+
+networks:
+  dappnet:
+    driver: bridge
