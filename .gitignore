@@ -1,1 +1,8 @@
 node_modules
+
+# Test coverage and reports
+coverage/
+.nyc_output/
+test-report/
+__coverage__/
+*.lcov
