@@ -1,27 +1,22 @@
 import express from 'express';
 import cors from 'cors';
-import { RegisterRoutes } from './routes/routes'; // Archivo generado por tsoa
-import { errorHandler } from './middlewares/error.middleware';
+import { RegisterRoutes } from './routes/routes';
 import swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from '../dist/swagger.json';
+import { errorHandler } from './middlewares/error.middleware';
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// Rutas generadas por tsoa
 RegisterRoutes(app);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+// UI de Swagger
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'OK' });
-});
-
-// Error handling
+// Middleware global de errores
 app.use(errorHandler);
 
-export default app; 
+export default app;

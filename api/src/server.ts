@@ -1,7 +1,9 @@
 import app from './app';
+import { config } from './config';
 
-const port = process.env.PORT || 3000;
+const PORT = config.port || 3000;
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-}); 
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`📚 Swagger UI disponible en http://localhost:${PORT}/docs`);
+});
