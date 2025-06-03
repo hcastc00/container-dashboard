@@ -1,0 +1,30 @@
+{
+  "dashboard": {
+    "title": "Docker Container Dashboard"
+  },
+  "container": {
+    "name": "Name",
+    "image": "Image",
+    "status": "Status",
+    "state": "State",
+    "command": "Command",
+    "created": "Created",
+    "ports": "Ports",
+    "network": "Network",
+    "mounts": "Mounts"
+  },
+  "actions": {
+    "start": "Start",
+    "stop": "Stop",
+    "restart": "Restart",
+    "kill": "Kill"
+  },
+  "messages": {
+    "starting": "Starting container...",
+    "stopping": "Stopping container...",
+    "restarting": "Restarting container...",
+    "killing": "Killing container...",
+    "error": "An error occurred",
+    "success": "Operation successful"
+  }
+}
