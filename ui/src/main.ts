@@ -5,6 +5,8 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import i18n from './i18n'
 import '@mdi/font/css/materialdesignicons.css'
+import Toast from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
 
 const vuetify = createVuetify({
   icons: {
@@ -12,4 +14,4 @@ const vuetify = createVuetify({
   },
 })
 
-createApp(App).use(createPinia()).use(vuetify).use(i18n).mount('#app')
+createApp(App).use(createPinia()).use(vuetify).use(i18n).use(Toast).mount('#app')
