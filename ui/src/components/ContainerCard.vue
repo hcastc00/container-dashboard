@@ -28,7 +28,7 @@
     <v-divider class="my-2"></v-divider>
 
     <v-card-actions class="justify-center">
-      <v-tooltip text="Start" v-if="container.State !== 'running'">
+      <v-tooltip :text="$t('actions.start')" v-if="container.State !== 'running'">
         <template #activator="{ props }">
           <v-btn v-bind="props" @click="handle('start')" color="green" variant="flat" icon>
             <v-icon>mdi-play</v-icon>
@@ -36,7 +36,7 @@
         </template>
       </v-tooltip>
 
-      <v-tooltip text="Stop" v-if="container.State === 'running'">
+      <v-tooltip :text="$t('actions.stop')" v-if="container.State === 'running'">
         <template #activator="{ props }">
           <v-btn v-bind="props" @click="handle('stop')" color="orange" variant="flat" icon>
             <v-icon>mdi-stop</v-icon>
@@ -44,7 +44,7 @@
         </template>
       </v-tooltip>
 
-      <v-tooltip text="Restart">
+      <v-tooltip :text="$t('actions.restart')">
         <template #activator="{ props }">
           <v-btn v-bind="props" @click="handle('restart')" color="blue" variant="flat" icon>
             <v-icon>mdi-restart</v-icon>
@@ -52,7 +52,7 @@
         </template>
       </v-tooltip>
 
-      <v-tooltip text="Kill">
+      <v-tooltip :text="$t('actions.kill')">
         <template #activator="{ props }">
           <v-btn v-bind="props" @click="handle('kill')" color="red" variant="flat" icon>
             <v-icon>mdi-cancel</v-icon>
@@ -67,21 +67,21 @@
 import type { DockerodeContainerInfo } from '@/api-client'
 import { useContainerStore } from '@/stores/containerStore'
 import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
 
 const props = defineProps<{
   container: DockerodeContainerInfo
 }>()
 
 const { t } = useI18n()
+const toast = useToast()
 const store = useContainerStore()
 
 const handle = async (action: 'start' | 'stop' | 'restart' | 'kill') => {
-  try {
-    const fn = store[action]
-    await fn(props.container.Id)
-    await store.fetchContainers()
-  } catch (err) {
-    console.error(t('messages.error'), err)
-  }
+  const containerName = props.container.Names[0]?.replace('/', '') || 'Unknown'
+  toast.info(t(`messages.action.${action}`, { name: containerName }))
+  const fn = store[action]
+  await fn(props.container.Id)
+  await store.fetchContainers()
 }
 </script>
