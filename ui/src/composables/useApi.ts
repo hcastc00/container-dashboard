@@ -6,7 +6,7 @@ const toast = useToast()
 
 // Create axios instance with interceptor
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
 })
 
 axiosInstance.interceptors.response.use(
@@ -20,11 +20,7 @@ axiosInstance.interceptors.response.use(
 // Pass axios instance in Configuration if supported
 export const useApi = () =>
   new DefaultApi(
-    new Configuration({
-      basePath: 'http://localhost:3000',
-      // Add axiosInstance if your Configuration accepts it, for example:
-      // httpClient: axiosInstance,
-    }),
+    new Configuration(),
     undefined,
     axiosInstance,
   )

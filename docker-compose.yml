@@ -2,27 +2,34 @@ services:
   api:
     build: ./api
     ports:
-      - "3000:3000"
+      - "${API_PORT}:${API_PORT}"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKER_SOCKET}:/var/run/docker.sock
     networks:
       - dappnet
     healthcheck:
-      test: curl -f http://localhost:3000/health || exit 1
+      test: curl -f http://localhost:${API_PORT}/health || exit 1
       interval: 10s
       retries: 3
       start_period: 5s
+    env_file:
+      - ./.env
     environment:
-      - PORT=3000
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${API_PORT}
+      - DOCKER_SOCKET_PATH=${DOCKER_SOCKET}
 
   ui:
     build: ./ui
     ports:
-      - "8080:80"
+      - "${UI_PORT}:80"
     networks:
       - dappnet
+    env_file:
+      - ./.env
     environment:
-      - VITE_API_URL=http://api:3000
+      - VITE_API_URL=http://api:${API_PORT}
+      - NODE_ENV=${NODE_ENV}
 
 networks:
   dappnet:
