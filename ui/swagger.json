@@ -1,0 +1,383 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"Dockerode.Port": {
+				"properties": {
+					"IP": {
+						"type": "string"
+					},
+					"PrivatePort": {
+						"type": "number",
+						"format": "double"
+					},
+					"PublicPort": {
+						"type": "number",
+						"format": "double"
+					},
+					"Type": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"IP",
+					"PrivatePort",
+					"PublicPort",
+					"Type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Dockerode.NetworkInfo": {
+				"properties": {
+					"IPAMConfig": {},
+					"Links": {},
+					"Aliases": {},
+					"NetworkID": {
+						"type": "string"
+					},
+					"EndpointID": {
+						"type": "string"
+					},
+					"Gateway": {
+						"type": "string"
+					},
+					"IPAddress": {
+						"type": "string"
+					},
+					"IPPrefixLen": {
+						"type": "number",
+						"format": "double"
+					},
+					"IPv6Gateway": {
+						"type": "string"
+					},
+					"GlobalIPv6Address": {
+						"type": "string"
+					},
+					"GlobalIPv6PrefixLen": {
+						"type": "number",
+						"format": "double"
+					},
+					"MacAddress": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"NetworkID",
+					"EndpointID",
+					"Gateway",
+					"IPAddress",
+					"IPPrefixLen",
+					"IPv6Gateway",
+					"GlobalIPv6Address",
+					"GlobalIPv6PrefixLen",
+					"MacAddress"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Dockerode.ContainerInfo": {
+				"properties": {
+					"Id": {
+						"type": "string"
+					},
+					"Names": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"Image": {
+						"type": "string"
+					},
+					"ImageID": {
+						"type": "string"
+					},
+					"Command": {
+						"type": "string"
+					},
+					"Created": {
+						"type": "number",
+						"format": "double"
+					},
+					"Ports": {
+						"items": {
+							"$ref": "#/components/schemas/Dockerode.Port"
+						},
+						"type": "array"
+					},
+					"Labels": {
+						"properties": {},
+						"additionalProperties": {
+							"type": "string"
+						},
+						"type": "object"
+					},
+					"State": {
+						"type": "string"
+					},
+					"Status": {
+						"type": "string"
+					},
+					"HostConfig": {
+						"properties": {
+							"NetworkMode": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"NetworkMode"
+						],
+						"type": "object"
+					},
+					"NetworkSettings": {
+						"properties": {
+							"Networks": {
+								"properties": {},
+								"additionalProperties": {
+									"$ref": "#/components/schemas/Dockerode.NetworkInfo"
+								},
+								"type": "object"
+							}
+						},
+						"required": [
+							"Networks"
+						],
+						"type": "object"
+					},
+					"Mounts": {
+						"items": {
+							"properties": {
+								"Propagation": {
+									"type": "string"
+								},
+								"RW": {
+									"type": "boolean"
+								},
+								"Mode": {
+									"type": "string"
+								},
+								"Driver": {
+									"type": "string"
+								},
+								"Destination": {
+									"type": "string"
+								},
+								"Source": {
+									"type": "string"
+								},
+								"Type": {
+									"type": "string"
+								},
+								"Name": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"Propagation",
+								"RW",
+								"Mode",
+								"Destination",
+								"Source",
+								"Type"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"Id",
+					"Names",
+					"Image",
+					"ImageID",
+					"Command",
+					"Created",
+					"Ports",
+					"Labels",
+					"State",
+					"Status",
+					"HostConfig",
+					"NetworkSettings",
+					"Mounts"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ContainerResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "api",
+		"version": "1.0.0",
+		"description": "container-dashboard API",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {
+			"name": "hcastc00"
+		}
+	},
+	"paths": {
+		"/containers": {
+			"get": {
+				"operationId": "ListContainers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Dockerode.ContainerInfo"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/containers/{id}/start": {
+			"post": {
+				"operationId": "StartContainer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContainerResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Container not found"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/containers/{id}/stop": {
+			"post": {
+				"operationId": "StopContainer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContainerResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/containers/{id}/restart": {
+			"post": {
+				"operationId": "RestartContainer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContainerResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/containers/{id}/kill": {
+			"post": {
+				"operationId": "KillContainer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ContainerResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
